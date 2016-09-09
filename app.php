@@ -13,36 +13,76 @@ function __autoload($class) {
    }
 }
 
+// creates an array of the names of the classes stored in the src dir
 $dirSrc = scandir("src/",1);
 $dirSrc = array_slice($dirSrc, 0, -2);
-// print_r($dirSrc);
 $classList = array();
 foreach ($dirSrc as $key => $value) {
   $className = substr($value, 0, -4);
   array_push($classList, $className);
 }
-var_dump($classList);
-
-
-$cat = new Cat("fuzu", 15);
-var_dump(get_object_vars($cat));
+//var_dump($classList);
+// $args = array("jim", 18);
+// $objectList = array();
+// foreach ($classList as $key => $value) {
+//   $r = new ReflectionClass($value);
+//   $objInstance = $r->newInstanceArgs($args);
+//   array_push($objectList, $objInstance);
+// }
+// var_dump($objectList);
+//
+// $rc = new ReflectionClass('Foo');
+// $foo = $rc->newInstanceArgs( array(1,2,3,4,5) );
+//
+// $cat = new Cat("fuzu", 15);
+// var_dump(get_object_vars($cat));
 
 // initializes a new instance of Person class
-$person = new Person("Jim", 16);
-$personName = $person->getName();
-echo "###################\r\n";
-echo "object created for {$personName} \r\n";
-var_dump(get_object_vars($person));
-echo "\n";
+
+
+
+// $person = new Person("Jim", 16);
+// $personName = $person->getName();
+// echo "###################\r\n";
+// echo "object created for {$personName} \r\n";
+// var_dump(get_object_vars($person));
+// echo "\n";
 
 // while true you will be returned to the initial prompt
 $inUse = true;
-
+$requestedClass = "";
 do {
+
+
+  if (strlen($requestedClass) === 0) {
+
+    $avaibleClasses = implode(" ", $classList);
+    $requestClass = "Welcome to Object Edit, \r\nchooose a class to instnce your "
+                    . "object :\033[33m {$avaibleClasses} \033[0m \r\n";
+    fwrite(STDOUT, $requestClass );
+    $requestedClass = trim(fgets(STDIN));
+
+    if (strlen($requestedClass) > 0 && in_array($requestedClass, $classList)) {
+      $requestArguments = "Please list the arguments for {$requestedClass}"
+                          . "\033[31m comma sepertated no spaces \033[0m, in"
+                          . "case of no arguments leave blank\r\n";
+      fwrite(STDOUT, $requestArguments);
+      $classArguments = trim(fgets(STDIN));
+      $args = explode(",", $classArguments);
+
+    }
+
+    $rc = new ReflectionClass($requestedClass);
+    $obj = $rc->newInstanceArgs( $args );
+    var_dump(get_object_vars($obj));
+    echo "\n";
+
+  }
+
   //initial prompt
   echo "\n";
   echo "###########################\r\n";
-  fwrite(STDOUT,  "Welcome to Object Edit, type help for commands: \r\n");
+  fwrite(STDOUT,  "type HELP for commands: \r\n");
   $line = trim(fgets(STDIN));
 
 
@@ -59,16 +99,16 @@ do {
     $propStr = substr($line, 4);
       if ((preg_match("/^[a-z][a-zA-Z1-9]*\=[a-zA-Z1-9]*$/", $propStr))) {
         $newProp = explode("=", $propStr);
-        $person->$newProp[0] = $newProp[1];
+        $obj->$newProp[0] = $newProp[1];
       }
   } else if ((preg_match("/^GET\s[a-z][a-zA-Z1-9]*$/", $line))) {
     //GET propertyname command
       $propStr = substr($line, 4);
-      $getProp = "The value of property {$propStr} is {$person->$propStr} \r\n";
+      $getProp = "The value of property {$propStr} is {$obj->$propStr} \r\n";
       echo $getProp;
   } else if ((preg_match("/^GET\s\*$/", $line))) {
     //GET * command
-      var_dump(get_object_vars($person));
+      var_dump(get_object_vars($obj));
   } else if ($line == "exit" || $line == "EXIT") {
     //EXIT command
       $inUse = false;
