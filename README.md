@@ -3,7 +3,15 @@
 ### by [Charles Moss](https://twitter.com/CharlesMoss)
 
 ## Description
-_User will be able to set new properties, retrieve a single value from a property, or retrieve all of the member properties of a given object._
+_User will be asked to choose a Class to instance from a list of files for in the src folder. User will be able to set new properties, retrieve a single value from a property, or retrieve all of the member properties of a given object._
+
+## Features
+
+- Load any valid Class from a local directory to be instanced for your object.
+- View a list of supported commands with the "HELP" commands.
+- Add a property and value to instanced object with syntax checking.
+- Retrieve the value of a specified property.
+- Retrieve all of the all of the member properties of a given object.
 
 ## Setup
 Clone this repo and navigate via terminal to the root of the repo's folder. From your terminal:
@@ -18,7 +26,6 @@ _This project was developed using OSX running PHP 5.5.36_
 
 ## To do
 
-- Add the ability edit any object not just the current hard coded example.
 - Add the ability to extend the supported commands.
 - Add more specific error reporting/handling and logging.
 - Add a way to store created and modified objects in a flat file or database.  

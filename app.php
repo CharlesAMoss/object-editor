@@ -21,62 +21,35 @@ foreach ($dirSrc as $key => $value) {
   $className = substr($value, 0, -4);
   array_push($classList, $className);
 }
-//var_dump($classList);
-// $args = array("jim", 18);
-// $objectList = array();
-// foreach ($classList as $key => $value) {
-//   $r = new ReflectionClass($value);
-//   $objInstance = $r->newInstanceArgs($args);
-//   array_push($objectList, $objInstance);
-// }
-// var_dump($objectList);
-//
-// $rc = new ReflectionClass('Foo');
-// $foo = $rc->newInstanceArgs( array(1,2,3,4,5) );
-//
-// $cat = new Cat("fuzu", 15);
-// var_dump(get_object_vars($cat));
-
-// initializes a new instance of Person class
-
-
-
-// $person = new Person("Jim", 16);
-// $personName = $person->getName();
-// echo "###################\r\n";
-// echo "object created for {$personName} \r\n";
-// var_dump(get_object_vars($person));
-// echo "\n";
 
 // while true you will be returned to the initial prompt
 $inUse = true;
+// if $requestedClass length is less than 1, user will be ask for a class
 $requestedClass = "";
+
 do {
 
-
-  if (strlen($requestedClass) === 0) {
-
+  if (strlen($requestedClass) == 0) {
+    // displys a list of classes from the src folder for user to select from
     $avaibleClasses = implode(" ", $classList);
     $requestClass = "Welcome to Object Edit, \r\nchooose a class to instnce your "
                     . "object :\033[33m {$avaibleClasses} \033[0m \r\n";
     fwrite(STDOUT, $requestClass );
     $requestedClass = trim(fgets(STDIN));
-
     if (strlen($requestedClass) > 0 && in_array($requestedClass, $classList)) {
+      // requests arguments from user
       $requestArguments = "Please list the arguments for {$requestedClass}"
                           . "\033[31m comma sepertated no spaces \033[0m, in"
                           . "case of no arguments leave blank\r\n";
       fwrite(STDOUT, $requestArguments);
       $classArguments = trim(fgets(STDIN));
       $args = explode(",", $classArguments);
-
     }
-
+    // instances the object and displays print it to terminal
     $rc = new ReflectionClass($requestedClass);
     $obj = $rc->newInstanceArgs( $args );
     var_dump(get_object_vars($obj));
     echo "\n";
-
   }
 
   //initial prompt
@@ -111,6 +84,7 @@ do {
       var_dump(get_object_vars($obj));
   } else if ($line == "exit" || $line == "EXIT") {
     //EXIT command
+      echo "goodbye\r\n";
       $inUse = false;
       exit(0);
   } else {
