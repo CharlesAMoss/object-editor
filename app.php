@@ -4,8 +4,7 @@
 
 // loads class
 function __autoload($class) {
-   $class_name = strtolower($class);
-   $path       = "src/{$class}.php";
+   $path = "src/{$class}.php";
    if (file_exists($path)) {
         require_once($path);
    } else {
@@ -32,15 +31,18 @@ do {
   if (strlen($requestedClass) == 0) {
     // displys a list of classes from the src folder for user to select from
     $avaibleClasses = implode(" ", $classList);
-    $requestClass = "Welcome to Object Edit, \r\nchooose a class to instnce your "
-                    . "object :\033[33m {$avaibleClasses} \033[0m \r\n";
+    echo "\n";
+    $requestClass = "Welcome to Object Edit! "
+                    . "Chooose a class to instnce your "
+                    . "object :\r\n\033[33m{$avaibleClasses} \033[0m \r\n";
     fwrite(STDOUT, $requestClass );
     $requestedClass = trim(fgets(STDIN));
     if (strlen($requestedClass) > 0 && in_array($requestedClass, $classList)) {
       // requests arguments from user
-      $requestArguments = "Please list the arguments for {$requestedClass}"
-                          . "\033[31m comma sepertated no spaces \033[0m, in"
-                          . "case of no arguments leave blank\r\n";
+      echo "\n";
+      $requestArguments = "Please list the arguments for \033[33m{$requestedClass}\033[0m"
+                          . "\033[31m comma,sepertated,no,spaces\033[0m format.\r\n"
+                          . "In the case of no arguments leave blank\r\n";
       fwrite(STDOUT, $requestArguments);
       $classArguments = trim(fgets(STDIN));
       $args = explode(",", $classArguments);
@@ -54,7 +56,7 @@ do {
 
   //initial prompt
   echo "\n";
-  echo "###########################\r\n";
+  echo "\n";
   fwrite(STDOUT,  "type HELP for commands: \r\n");
   $line = trim(fgets(STDIN));
 
