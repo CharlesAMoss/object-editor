@@ -1,15 +1,31 @@
 <?php
 
+
+
 // loads class
 function __autoload($class) {
    $class_name = strtolower($class);
    $path       = "src/{$class}.php";
    if (file_exists($path)) {
-       require_once($path);
+        require_once($path);
    } else {
-       die("The file {$class}.php could not be found!");
+        die("The file {$class}.php could not be found!");
    }
 }
+
+$dirSrc = scandir("src/",1);
+$dirSrc = array_slice($dirSrc, 0, -2);
+// print_r($dirSrc);
+$classList = array();
+foreach ($dirSrc as $key => $value) {
+  $className = substr($value, 0, -4);
+  array_push($classList, $className);
+}
+var_dump($classList);
+
+
+$cat = new Cat("fuzu", 15);
+var_dump(get_object_vars($cat));
 
 // initializes a new instance of Person class
 $person = new Person("Jim", 16);
