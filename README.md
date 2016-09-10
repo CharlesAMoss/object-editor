@@ -10,6 +10,7 @@ _User will be asked to choose a Class to instance from a list of files for in th
 - Load any valid Class from a local directory to be instanced for your object.
 - View a list of supported commands with the "HELP" command.
 - Add a property and value to instanced object with syntax checking.
+- If a property already exists value is type checked before updating.  
 - Retrieve the value of a specified property.
 - Retrieve all of the all of the member properties of a given object.
 - Write a serialized sting as a record of instanced object.
@@ -27,7 +28,7 @@ _This project was developed using OSX running PHP 5.5.36_
 
 ## To do
 
-- type checking for SET.
+
 - improve display output.
 - recall object from file.
 

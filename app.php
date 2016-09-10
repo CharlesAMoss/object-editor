@@ -79,9 +79,24 @@ do {
     //SET propertyname=value command
     $propStr = substr($line, 4);
       if ((preg_match("/^[a-z][a-zA-Z1-9]*\=[a-zA-Z1-9]*$/", $propStr))) {
-        $newProp = explode("=", $propStr);
-        $obj->$newProp[0] = $newProp[1];
-      }
+        $prop = explode("=", $propStr);
+        if (property_exists($obj,$prop[0])) {
+          echo "property exists checking type ...";
+          if(is_numeric($prop[1])) {
+            $prop[1] = intval($prop[1]);
+          }
+          if (gettype($obj->$prop[0]) == gettype($prop[1])) {
+            echo "type matches...setting {$prop[1]} as value";
+            $obj->$prop[0] = $prop[1];
+          } else {
+            $typeName = gettype($obj->$prop[0]);
+            echo "{$prop[1]} type does not match {$typeName}";
+          }
+        } else {
+          echo "property {$prop[0]} was added with a value of {$prop[1]}";
+          $obj->$prop[0] = $prop[1];
+        }
+    }
   } else if ((preg_match("/^(GET|get)\s[a-z][a-zA-Z1-9]*$/", $line))) {
     //GET propertyname command
       $propStr = substr($line, 4);
