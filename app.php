@@ -1,7 +1,5 @@
 <?php
 
-
-
 // loads class
 function __autoload($class) {
    $path = "src/{$class}.php";
@@ -27,7 +25,7 @@ $inUse = true;
 $requestedClass = "";
 
 do {
-
+  //initial prompt
   if (strlen($requestedClass) == 0) {
     // displys a list of classes from the src folder for user to select from
     $avaibleClasses = implode(" ", $classList);
@@ -37,6 +35,8 @@ do {
                     . "object :\r\n\033[33m{$avaibleClasses} \033[0m \r\n";
     fwrite(STDOUT, $requestClass );
     $requestedClass = trim(fgets(STDIN));
+    $requestedClass = ucfirst($requestedClass);
+
     if (strlen($requestedClass) > 0 && in_array($requestedClass, $classList)) {
       // requests arguments from user
       echo "\n";
@@ -46,18 +46,21 @@ do {
       fwrite(STDOUT, $requestArguments);
       $classArguments = trim(fgets(STDIN));
       $args = explode(",", $classArguments);
+    } else {
+      die("The class \033[33m{$requestedClass}\033[0m could not be found!\r\n");
     }
+
     // instances the object and displays print it to terminal
     $rc = new ReflectionClass($requestedClass);
     $obj = $rc->newInstanceArgs( $args );
     var_dump(get_object_vars($obj));
-    echo "\n";
+
   }
 
-  //initial prompt
+  //command prompt
   echo "\n";
   echo "\n";
-  fwrite(STDOUT,  "type HELP for commands: \r\n");
+  fwrite(STDOUT,  "Type HELP for commands list.\r\n");
   $line = trim(fgets(STDIN));
 
 
@@ -91,7 +94,7 @@ do {
       exit(0);
   } else {
     // no condtions met, program ends with error message
-      die("I am sorry, but that is not a vaild command. \r\n");
+      echo "I am sorry, but that is not a vaild command. \r\n";
   }
 
 } while ($inUse === true);
