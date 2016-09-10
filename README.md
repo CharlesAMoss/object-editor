@@ -8,10 +8,11 @@ _User will be asked to choose a Class to instance from a list of files for in th
 ## Features
 
 - Load any valid Class from a local directory to be instanced for your object.
-- View a list of supported commands with the "HELP" commands.
+- View a list of supported commands with the "HELP" command.
 - Add a property and value to instanced object with syntax checking.
 - Retrieve the value of a specified property.
 - Retrieve all of the all of the member properties of a given object.
+- Write a serialized sting as a record of instanced object.
 
 ## Setup
 Clone this repo and navigate via terminal to the root of the repo's folder. From your terminal:
@@ -26,9 +27,10 @@ _This project was developed using OSX running PHP 5.5.36_
 
 ## To do
 
-- Add the ability to extend the supported commands.
-- Add more specific error reporting/handling and logging.
-- Add a way to store created and modified objects in a flat file or database.  
+- type checking for SET.
+- improve display output.
+- recall object from file.
+
 
 ### Legal
 Copyright (c) 2016 Charles A Moss

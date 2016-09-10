@@ -1,6 +1,6 @@
 <?php
 
-// loads class
+// loads classes
 function __autoload($class) {
    $path = "src/{$class}.php";
    if (file_exists($path)) {
@@ -19,9 +19,9 @@ foreach ($dirSrc as $key => $value) {
   array_push($classList, $className);
 }
 
-// while true you will be returned to the initial prompt
+// while true user will be returned to the initial prompt
 $inUse = true;
-// if $requestedClass length is less than 1, user will be ask for a class
+// if $requestedClass length is 0, user will be ask for a class
 $requestedClass = "";
 
 do {
@@ -66,14 +66,14 @@ do {
   fwrite(STDOUT,  "Type HELP for commands list.\r\n");
   $line = trim(fgets(STDIN));
 
-
   if ($line == "help" || $line == "HELP" || strlen($line) == 0) {
     //HELP command
-    fwrite(STDERR, "HELP : view commands list \n"
-                   . "SET < propertyname=value > : adds a property with a value to loaded object \n"
-                   . "GET < propertyname > : retive the value of the property \n"
-                   . "GET * : Diplay Object's properties and values \n"
-                   . "EXIT : exit Object Edit \n");
+    fwrite(STDERR, "\033[32mHELP\033[0m : view commands list\n"
+                   . "\033[32mSET < propertyname=value >\033[0m : adds a property with a value to loaded object\n"
+                   . "\033[32mGET < propertyname >\033[0m : retive the value of the property\n"
+                   . "\033[32mGET *\033[0m : Diplay Object's properties and values\n"
+                   . "\033[32mSAVE\033[0m : Save Object to local file\n"
+                   . "\033[32mEXIT\033[0m : exit Object Edit\n");
 
   } else if ((preg_match("/^(SET|set)\s[a-z][a-zA-Z1-9]*\=[a-zA-Z1-9]*$/", $line))) {
     //SET propertyname=value command
@@ -89,10 +89,15 @@ do {
       echo $getProp;
   } else if ((preg_match("/^(GET|get)\s\*$/", $line))) {
     //GET * command
-      var_dump(get_object_vars($obj));
+      print_r(get_object_vars($obj));
+  } else if ((preg_match("/^(SAVE|save)$/", $line))) {
+    //SAVE command
+      $file = 'objects/data.txt';
+      $serialized = serialize($obj);
+      file_put_contents($file, $serialized, FILE_APPEND | LOCK_EX);
   } else if ($line == "exit" || $line == "EXIT") {
     //EXIT command
-      echo "goodbye\r\n";
+      echo "\033[31mgoodbye\033[0m\r\n";
       $inUse = false;
       exit(0);
   } else {
