@@ -4,9 +4,9 @@
 function __autoload($class) {
    $path = "src/{$class}.php";
    if (file_exists($path)) {
-        require_once($path);
+      require_once($path);
    } else {
-        die("The file {$class}.php could not be found!");
+      die("The file {$class}.php could not be found!");
    }
 }
 
@@ -75,7 +75,7 @@ do {
 
   } else if ((preg_match("/^(SET|set)\s[a-z][a-zA-Z1-9]*\=[a-zA-Z1-9]*$/", $line))) {
     //SET propertyname=value command
-    $propStr = substr($line, 4);
+      $propStr = substr($line, 4);
       if ((preg_match("/^[a-z][a-zA-Z1-9]*\=[a-zA-Z1-9]*$/", $propStr))) {
         $prop = explode("=", $propStr);
         if(is_bool($prop[1])) {
@@ -95,9 +95,15 @@ do {
           }
         } else {
           echo "property {$prop[0]} was added with a value of {$prop[1]}";
-          $obj->$prop[0] = $prop[1];
+          if (is_bool($prop[1])) {
+            $obj->$prop[0] = (bool) $prop[1];
+          } else if (is_numeric($prop[1])) {
+            $obj->$prop[0] = (integer) $prop[1];
+          } else {
+            $obj->$prop[0] = $prop[1];
+          }
         }
-    }
+      }
   } else if ((preg_match("/^(GET|get)\s[a-z][a-zA-Z1-9]*$/", $line))) {
     //GET propertyname command
       $propStr = substr($line, 4);
@@ -118,7 +124,7 @@ do {
       exit(0);
   } else {
     // no condtions met, error message
-      echo "I am sorry, but that is not a vaild command. \r\n";
+      echo "I am sorry, ${line} is not a vaild command. \r\n";
   }
 
 } while ($inUse == true);
