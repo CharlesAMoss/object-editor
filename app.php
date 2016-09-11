@@ -29,7 +29,6 @@ do {
   if (strlen($requestedClass) == 0) {
     // displys a list of classes from the src folder for user to select from
     $avaibleClasses = implode(" ", $classList);
-    echo "\n";
     $requestClass = "Welcome to Object Edit! "
                     . "Chooose a \033[33mClass\033[0m to instnce your "
                     . "object :\r\n\033[33m{$avaibleClasses} \033[0m \r\n";
@@ -39,7 +38,6 @@ do {
       $requestedClass = $classList[0];
     }
     $requestedClass = ucfirst($requestedClass);
-
     if (strlen($requestedClass) > 0 && in_array($requestedClass, $classList)) {
       // requests arguments from user
       echo "\n";
@@ -80,11 +78,14 @@ do {
     $propStr = substr($line, 4);
       if ((preg_match("/^[a-z][a-zA-Z1-9]*\=[a-zA-Z1-9]*$/", $propStr))) {
         $prop = explode("=", $propStr);
+        if(is_bool($prop[1])) {
+          $prop[1] = boolval($prop[1]);
+        }
+        if(is_numeric($prop[1])) {
+          $prop[1] = intval($prop[1]);
+        }
         if (property_exists($obj,$prop[0])) {
           echo "property exists checking type ...";
-          if(is_numeric($prop[1])) {
-            $prop[1] = intval($prop[1]);
-          }
           if (gettype($obj->$prop[0]) == gettype($prop[1])) {
             echo "type matches...setting {$prop[1]} as value";
             $obj->$prop[0] = $prop[1];
