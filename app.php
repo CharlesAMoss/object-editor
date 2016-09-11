@@ -69,21 +69,37 @@ do {
     fwrite(STDERR, "\033[32mHELP\033[0m : view commands list\n"
                    . "\033[32mSET < propertyname=value >\033[0m : adds a property with a value to loaded object\n"
                    . "\033[32mGET < propertyname >\033[0m : retive the value of the property\n"
-                   . "\033[32mGET *\033[0m : Diplay Object's properties and values\n"
+                   . "\033[32mGET *\033[0m : Display Object's properties and values\n"
                    . "\033[32mSAVE\033[0m : Save Object to local file\n"
                    . "\033[32mEXIT\033[0m : exit Object Edit\n");
 
-  } else if ((preg_match("/^(SET|set)\s[a-z][a-zA-Z1-9]*\=[a-zA-Z1-9]*$/", $line))) {
+  } else if ((preg_match("/^(SET|set)\s[a-z][a-zA-Z1-9]*\=([a-zA-Z1-9]*|\d*\.\d*)$/", $line))) {
     //SET propertyname=value command
       $propStr = substr($line, 4);
-      if ((preg_match("/^[a-z][a-zA-Z1-9]*\=[a-zA-Z1-9]*$/", $propStr))) {
+      if ((preg_match("/^[a-z][a-zA-Z1-9]*\=([a-zA-Z1-9]*|\d*\.\d*)$/", $propStr))) {
         $prop = explode("=", $propStr);
-        if(is_bool($prop[1])) {
-          $prop[1] = boolval($prop[1]);
+        // Type assessment
+        if (is_numeric($prop[1])) {
+          echo "{$prop[1]} is number..";
+          if ((preg_match("/^\d*\.\d*$/", $prop[1]))) {
+            echo ". a float.. ";
+            $prop[1] = floatval($prop[1]);
+          } else {
+            echo ". an interger.. ";
+            $prop[1] = intval($prop[1]);
+          }
         }
-        if(is_numeric($prop[1])) {
-          $prop[1] = intval($prop[1]);
+        if(in_array($prop[1], array("true", "false"), true)) {
+          echo "{$prop[1]} is bool.. ";
+          if ($prop[1] !== "false") {
+            settype($prop[1], 'bool');
+            $prop[1] = true;
+          } else {
+            settype($prop[1], 'bool');
+            $prop[1] = false;
+          }
         }
+        // Type vaildation if property exists then updates value
         if (property_exists($obj,$prop[0])) {
           echo "property exists checking type ...";
           if (gettype($obj->$prop[0]) == gettype($prop[1])) {
@@ -93,17 +109,32 @@ do {
             $typeName = gettype($obj->$prop[0]);
             echo "{$prop[1]} type does not match {$typeName}";
           }
+          // Create a new property with value
         } else {
-          echo "property {$prop[0]} was added with a value of {$prop[1]}";
-          if (is_bool($prop[1])) {
-            $obj->$prop[0] = (bool) $prop[1];
-          } else if (is_numeric($prop[1])) {
-            $obj->$prop[0] = (integer) $prop[1];
+          if (is_numeric($prop[1])) {
+            if ((preg_match("/^\d*\.\d*$/", $prop[1]))) {
+              $prop[1] = floatval($prop[1]);
+              $obj->$prop[0] = (float) $prop[1];
+            } else {
+              $prop[1] = intval($prop[1]);
+              $obj->$prop[0] = (integer) $prop[1];
+            }
+          } else if (in_array($prop[1], array("true", "false"), true)) {
+              if ($prop[1] !== "false") {
+                settype($prop[0], 'bool');
+                $obj->$prop[0] = true;
+              } else {
+                settype($prop[0], 'bool');
+                $obj->$prop[0] = false;
+              }
           } else {
-            $obj->$prop[0] = $prop[1];
+            $obj->$prop[0] = (string) $prop[1];
           }
+            $typeName = gettype($obj->$prop[0]);
+            echo "property {$prop[0]} was added with a value of {$typeName} {$prop[1]}";
         }
       }
+
   } else if ((preg_match("/^(GET|get)\s[a-z][a-zA-Z1-9]*$/", $line))) {
     //GET propertyname command
       $propStr = substr($line, 4);

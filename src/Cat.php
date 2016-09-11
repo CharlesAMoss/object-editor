@@ -2,7 +2,8 @@
 	Class Cat
 	{
     public $name;
-    Public $age;
+    public $age;
+
 
     function __construct($name, $age)
     {
@@ -11,7 +12,7 @@
     }
 
     function setName($new_name) {
-      $this->Name = (String) $new_name;
+      $this->name = (String) $new_name;
     }
 
     function getName() {
@@ -19,7 +20,7 @@
     }
 
     function setAge($new_age) {
-      $this->Age = (String) $new_age;
+      $this->age = (Integer) $new_age;
     }
 
     function getAge() {

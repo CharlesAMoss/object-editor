@@ -2,16 +2,18 @@
 	Class Person
 	{
     public $name;
-    Public $age;
+    public $age;
+		public $isCool;
 
-    function __construct($name, $age)
+    function __construct($name, $age, $isCool)
     {
-       $this->name = (String) $name;
-       $this->age = (Integer) $age;
+       $this->name = (string) $name;
+       $this->age = (integer) $age;
+			 $this->isCool = (bool) $isCool;
     }
 
     function setName($new_name) {
-      $this->Name = (String) $new_name;
+      $this->name = (string) $new_name;
     }
 
     function getName() {
@@ -19,13 +21,20 @@
     }
 
     function setAge($new_age) {
-      $this->Age = (String) $new_age;
+      $this->age = (integer) $new_age;
     }
 
     function getAge() {
       return $this->age;
     }
 
+		function setIsCool($new_isCool) {
+      $this->isCool = (integer) $new_isCool;
+    }
+
+    function getIsCool() {
+      return $this->isCool;
+    }
 
   }
 ?>

@@ -28,7 +28,7 @@ _This project was developed using OSX running PHP 5.5.36_
 
 ## To do
 
-
+- improve Bool assessment. 
 - improve display output.
 - recall object from file.
 
