@@ -3,7 +3,7 @@
 ### by [Charles Moss](https://twitter.com/CharlesMoss)
 
 ## Description
-_User will be asked to choose a Class to instance from a list of files for in the src folder. User will be able to set new properties, retrieve a single value from a property, or retrieve all of the member properties of a given object._
+_User will be asked to choose a Class to instance from a list of files form the .src/ folder. User will be able to set new properties, retrieve a single value from a property, or retrieve all of the member properties of a given object._
 
 ## Features
 
